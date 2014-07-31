@@ -157,12 +157,21 @@ module Mailjet
     end
 
     def formatted_payload
-      payload = attributes.reject { |k,v| v.blank? }
+      payload = attributes.reject { |k,v| v.blank? }.symbolize_keys
       payload = payload.slice(*properties)
+      payload = fix_id_keys(payload)
       payload = camelcase_keys(payload)
       payload.inject({}) do |h, (k, v)|
         v = v.utc.as_json if v.respond_to? :utc
         h.merge!({k => v})
+      end
+    end
+
+    def fix_id_keys(hash)
+      hash.inject({}) do |_hash, (key, value)|
+        new_key = key.to_s.gsub(/_id$/, '_i_d')
+        _hash[new_key] = value
+        _hash
       end
     end
 
