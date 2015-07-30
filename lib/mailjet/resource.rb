@@ -226,7 +226,6 @@ module Mailjet
 
     def formatted_payload
       payload = attributes.reject { |k,v| v.blank? }.symbolize_keys
-      payload = payload.slice(*properties)
       payload = fix_id_keys(payload)
       payload = camelcase_keys(payload)
       payload.inject({}) do |h, (k, v)|
