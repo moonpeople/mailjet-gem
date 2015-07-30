@@ -38,7 +38,7 @@ class Mailjet::APIMailer
     end
 
     payload = {
-      :from => mail.from || Mailjet.config.default_from,
+      :from => mail[:from].to_s || Mailjet.config.default_from,
       :sender => mail.sender,
       :to => mail.to,
       :cc => mail.cc,
